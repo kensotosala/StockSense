@@ -2,19 +2,19 @@ import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import "./App.css";
 
 interface FormState {
-  sellsData: File | null;
-  inventoryData: File | null;
+  sells: File | null;
+  inventory: File | null;
 }
 
 interface FormErrors {
-  sellsData?: string;
-  inventoryData?: string;
+  sells?: string;
+  inventory?: string;
 }
 
 const App = () => {
   const [formData, setFormData] = useState<FormState>({
-    sellsData: null,
-    inventoryData: null,
+    sells: null,
+    inventory: null,
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
@@ -47,12 +47,12 @@ const App = () => {
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
 
-    if (!formData.sellsData) {
-      newErrors.sellsData = "El archivo de datos de ventas es obligatorio.";
+    if (!formData.sells) {
+      newErrors.sells = "El archivo de datos de ventas es obligatorio.";
     }
 
-    if (!formData.inventoryData) {
-      newErrors.inventoryData = "El archivo de inventario es obligatorio.";
+    if (!formData.inventory) {
+      newErrors.inventory = "El archivo de inventario es obligatorio.";
     }
 
     setErrors(newErrors);
@@ -64,8 +64,8 @@ const App = () => {
     event.preventDefault();
 
     console.log("GENERAR PRESIONADO");
-    console.log("Ventas:", formData.sellsData);
-    console.log("Inventario:", formData.inventoryData);
+    console.log("Ventas:", formData.sells);
+    console.log("Inventario:", formData.inventory);
     console.log("Datos del formulario:", formData);
 
     if (!validateForm()) {
@@ -73,16 +73,16 @@ const App = () => {
       return;
     }
 
-    const { sellsData, inventoryData } = formData;
-    if (!sellsData || !inventoryData) {
+    const { sells, inventory } = formData;
+    if (!sells || !inventory) {
       console.log("Error: archivos no seleccionados después de validación.");
       return;
     }
 
     const data = new FormData();
 
-    data.append("sellsData", sellsData);
-    data.append("inventoryData", inventoryData);
+    data.append("sells", sells);
+    data.append("inventory", inventory);
 
     console.log("Formulario válido:", formData);
     console.log("FormData creado:", data);
@@ -93,7 +93,7 @@ const App = () => {
       <header className="header">
         <h1 className="app-title">StockSense</h1>
 
-        <p className="app-subtitle">Manage Your Inventory and Sales Data</p>
+        <p className="app-subtitle">Inventory Intelligence Platform</p>
       </header>
 
       <form onSubmit={handleSubmit} className="form-container">
@@ -105,18 +105,18 @@ const App = () => {
           <input
             id="sells"
             type="file"
-            name="sellsData"
+            name="sells"
             className="input-sells"
             accept=".csv,.xlsx,.xls"
             onChange={handleChange}
           />
 
-          {formData.sellsData && (
-            <span className="file-name">{formData.sellsData.name}</span>
+          {formData.sells && (
+            <span className="file-name">{formData.sells.name}</span>
           )}
 
-          {errors.sellsData && (
-            <span className="error-message">{errors.sellsData}</span>
+          {errors.sells && (
+            <span className="error-message">{errors.sells}</span>
           )}
         </div>
 
@@ -128,18 +128,18 @@ const App = () => {
           <input
             id="inventory"
             type="file"
-            name="inventoryData"
+            name="inventory"
             className="input-inventory"
             accept=".csv,.xlsx,.xls"
             onChange={handleChange}
           />
 
-          {formData.inventoryData && (
-            <span className="file-name">{formData.inventoryData.name}</span>
+          {formData.inventory && (
+            <span className="file-name">{formData.inventory.name}</span>
           )}
 
-          {errors.inventoryData && (
-            <span className="error-message">{errors.inventoryData}</span>
+          {errors.inventory && (
+            <span className="error-message">{errors.inventory}</span>
           )}
         </div>
 
