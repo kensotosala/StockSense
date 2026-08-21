@@ -10,25 +10,27 @@ router = APIRouter()
 
 @router.post("/analysis")
 async def analyze_data(
-    ventas: UploadFile = File(...),
-    inventario_actual: UploadFile = File(...),
-    plazo_historial_inventario: int = 201,
-    dias_cobertura: int = 270,
-    dias_colchon: int = 25,
+    sells: UploadFile = File(...),
+    actual_inventory: UploadFile = File(...),
+    inventory_history_days: int = 201,
+    coverage_days: int = 270,
+    buffer_days: int = 25,
     lead_time: int = 30,
 ):
 
-    ventas_df = pd.read_csv(BytesIO(await ventas.read()), delimiter=";")
+    sells_df = pd.read_csv(BytesIO(await sells.read()), delimiter=";")
 
-    inventario_df = pd.read_csv(BytesIO(await inventario_actual.read()), delimiter=";")
+    actual_inventory_df = pd.read_csv(
+        BytesIO(await actual_inventory.read()), delimiter=";"
+    )
 
     resultado = generar_orden(
-        plazo_historial_inventario=plazo_historial_inventario,
-        dias_cobertura=dias_cobertura,
-        dias_colchon=dias_colchon,
+        plazo_historial_inventario=inventory_history_days,
+        dias_cobertura=coverage_days,
+        dias_colchon=buffer_days,
         lead_time=lead_time,
-        ventas_articulos=ventas_df,
-        inventario_actual=inventario_df,
+        ventas_articulos=sells_df,
+        inventario_actual=actual_inventory_df,
     )
 
     reporte = generar_reporte(resultado, "ALL_SPORT")
