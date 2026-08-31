@@ -4,15 +4,26 @@ import DataForm from "./components/data-form/data-form";
 
 const App = () => {
   const [openFormDialog, setOpenFormDialog] = useState(false);
-
-  // Function to open or close the dialog
-  const handleToggleDialog = () => {
-    setOpenFormDialog((prev) => !prev);
-  };
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     console.log("App running");
   }, []);
+
+  // Function to open or close the dialog
+  const handleToggleDialog = () => {
+    if (!openFormDialog) {
+      setIsLoading(true);
+
+      // Simulates the loading time
+      setTimeout(() => {
+        setIsLoading(false);
+        setOpenFormDialog(true);
+      }, 500);
+    } else {
+      setOpenFormDialog(false);
+    }
+  };
 
   return (
     <main className="app">
@@ -21,8 +32,10 @@ const App = () => {
         <p className="app-subtitle">Inventory Intelligence Platform</p>
       </header>
 
-      {openFormDialog ? (
-        <DataForm />
+      {isLoading ? (
+        <div className="spinner"></div>
+      ) : openFormDialog ? (
+        <DataForm handleToggleDialog={handleToggleDialog} />
       ) : (
         <button className="btn-get-started" onClick={handleToggleDialog}>
           Get Started
