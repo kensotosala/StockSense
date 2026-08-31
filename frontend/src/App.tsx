@@ -1,9 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
+import DataForm from "./components/data-form/data-form";
 
 const App = () => {
+  const [openFormDialog, setOpenFormDialog] = useState(false);
+
+  // Function to open or close the dialog
+  const handleToggleDialog = () => {
+    setOpenFormDialog((prev) => !prev);
+  };
+
   useEffect(() => {
-    console.log("App montada");
+    console.log("App running");
   }, []);
 
   return (
@@ -13,7 +21,13 @@ const App = () => {
         <p className="app-subtitle">Inventory Intelligence Platform</p>
       </header>
 
-      <button className="btn-get-started">Get Started</button>
+      {openFormDialog ? (
+        <DataForm />
+      ) : (
+        <button className="btn-get-started" onClick={handleToggleDialog}>
+          Get Started
+        </button>
+      )}
     </main>
   );
 };
