@@ -1,0 +1,68 @@
+.form-container {
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 10px;
+  color: #000000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: auto;
+}
+
+/*Close Button*/
+.wrapper-btn-close {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-close {
+  background: transparent;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.data-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  width: 100%;
+}
+
+.form-column {
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* Makes each column has the same size */
+  gap: 5px; /* Space between label and input */
+}
+
+label {
+  font-weight: bold;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #4b4b4b;
+  background-color: #f7f7f7;
+  border: 2px solid #e5e5e5;
+  border-radius: 16px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+input[type="text"]:focus {
+  background-color: #ffffff;
+  border-color: #1cb0f6;
+  box-shadow: 0 0 0 4px rgba(28, 176, 246, 0.2);
+}
