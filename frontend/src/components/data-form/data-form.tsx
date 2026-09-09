@@ -1,3 +1,4 @@
+import CustomInputFile from "../custom-input-file/customInputFile";
 import "./data-form.css";
 
 interface DataFormProps {
@@ -30,10 +31,12 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
         </div>
 
         <div className="form-row">
-          {/* Inventory History Days */}
           <div className="form-column">
-            <label htmlFor="">Inventory Data Days</label>
-            <input type="text" />
+            {/* Inventory History Days */}
+            <CustomInputFile />
+
+            {/* <label htmlFor="">Inventory Data Days</label>
+            <input type="text" /> */}
           </div>
 
           {/* Coverage Days */}

@@ -1,0 +1,17 @@
+#inventory-data-btn {
+  padding: 10px;
+  color: white;
+  background-color: #009578;
+  border: 1px solid #000;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#inventory-data-btn:hover {
+  background-color: #00b28f;
+}
+
+#inventory-data-info {
+  margin-left: 10px;
+  color: #aaa;
+}
