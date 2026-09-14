@@ -11,11 +11,10 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
   // File States
   const [salesData, setSalesData] = useState<File | null>(null);
   const [currentInventory, setCurrentInventory] = useState<File | null>(null);
-  const [inventoryHistoryDays, setInventoryHistoryDays] = useState<File | null>(
-    null,
-  );
 
   // Text States
+  const [inventoryHistoryDays, setInventoryHistoryDays] = useState("");
+
   const [coverageDays, setCoverageDays] = useState("");
   const [bufferDays, setBufferDays] = useState("");
   const [leadTime, setLeadTime] = useState("");
@@ -27,8 +26,7 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Form Validation
-    if (!salesData || !currentInventory || !inventoryHistoryDays) {
+    if (!salesData || !currentInventory) {
       alert("Please upload the required files.");
       return;
     }
@@ -36,20 +34,21 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
     setIsSubmitting(true);
 
     try {
-      // 🔥 Llamamos al servicio externo pasándole el objeto estructurado
-      await submitInventoryData({
-        salesData,
-        currentInventory,
-        inventoryHistoryDays,
+      const reporte = await submitInventoryData({
+        sells: salesData,
+        actualInventory: currentInventory,
+        inventoryHistoryDays: inventoryHistoryDays,
         coverageDays,
         bufferDays,
         leadTime,
       });
 
-      alert("¡Datos y archivos enviados con éxito!");
+      console.log("Reporte recibido del backend:", reporte);
+
+      alert("¡Análisis completado con éxito!");
       handleToggleDialog();
     } catch (error) {
-      alert("Hubo un error al intentar guardar el formulario." + error);
+      alert("Hubo un error al intentar guardar el formulario: " + error);
     } finally {
       setIsSubmitting(false);
     }
@@ -77,7 +76,7 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
               input_type="file"
               htmlFor="sales-data"
               span_id="sales-data-info"
-              onChange={(file) => setInventoryHistoryDays(file)}
+              onChange={(file) => setSalesData(file)}
             />
           </div>
 
@@ -92,7 +91,7 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
               input_type="file"
               htmlFor="current-inventory-data"
               span_id="current-inventory-data-info"
-              onChange={(file) => setInventoryHistoryDays(file)}
+              onChange={(file) => setCurrentInventory(file)}
             />
           </div>
         </div>
@@ -100,18 +99,14 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
         <div className="form-row">
           <div className="form-column">
             {/* Inventory History Days */}
-            <CustomInputFile
-              label_text="Inventory History Days"
-              input_id="inventory-data"
-              file_type=".csv"
-              input_type="file"
-              htmlFor="inventory-data"
-              span_id="inventory-data-info"
-              onChange={(file) => setInventoryHistoryDays(file)}
+            <label htmlFor="">Inventory Data Days</label>
+            <input
+              id="history-days"
+              type="text"
+              value={inventoryHistoryDays}
+              onChange={(e) => setInventoryHistoryDays(e.target.value)}
+              disabled={isSubmitting}
             />
-
-            {/* <label htmlFor="">Inventory Data Days</label>
-            <input type="text" /> */}
           </div>
 
           {/* Coverage Days */}

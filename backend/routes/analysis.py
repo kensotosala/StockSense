@@ -1,4 +1,4 @@
-from fastapi import APIRouter, UploadFile, File
+from fastapi import APIRouter, Form, UploadFile, File
 from io import BytesIO
 import pandas as pd
 
@@ -9,13 +9,14 @@ router = APIRouter()
 
 
 @router.post("/analysis")
+@router.post("/analysis")
 async def analyze_data(
     sells: UploadFile = File(...),
     actual_inventory: UploadFile = File(...),
-    inventory_history_days: int = 201,
-    coverage_days: int = 270,
-    buffer_days: int = 25,
-    lead_time: int = 30,
+    inventory_history_days: int = Form(201),
+    coverage_days: int = Form(270),
+    buffer_days: int = Form(25),
+    lead_time: int = Form(30),
 ):
 
     sells_df = pd.read_csv(BytesIO(await sells.read()), delimiter=";")
