@@ -1,11 +1,60 @@
+import React, { useState } from "react";
 import CustomInputFile from "../custom-input-file/customInputFile";
 import "./data-form.css";
+import { submitInventoryData } from "../../services/InventoryService";
 
 interface DataFormProps {
   handleToggleDialog: () => void;
 }
 
 const DataForm = ({ handleToggleDialog }: DataFormProps) => {
+  // File States
+  const [salesData, setSalesData] = useState<File | null>(null);
+  const [currentInventory, setCurrentInventory] = useState<File | null>(null);
+  const [inventoryHistoryDays, setInventoryHistoryDays] = useState<File | null>(
+    null,
+  );
+
+  // Text States
+  const [coverageDays, setCoverageDays] = useState("");
+  const [bufferDays, setBufferDays] = useState("");
+  const [leadTime, setLeadTime] = useState("");
+
+  // Loading States
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Function to process and send the form
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    // Form Validation
+    if (!salesData || !currentInventory || !inventoryHistoryDays) {
+      alert("Please upload the required files.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // 🔥 Llamamos al servicio externo pasándole el objeto estructurado
+      await submitInventoryData({
+        salesData,
+        currentInventory,
+        inventoryHistoryDays,
+        coverageDays,
+        bufferDays,
+        leadTime,
+      });
+
+      alert("¡Datos y archivos enviados con éxito!");
+      handleToggleDialog();
+    } catch (error) {
+      alert("Hubo un error al intentar guardar el formulario." + error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="form-container">
       <div className="wrapper-btn-close">
@@ -15,7 +64,7 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
       </div>
       {/* Form */}
       <h2>Completa el Formulario</h2>
-      <form action="" className="data-form">
+      <form onSubmit={handleSubmit} className="data-form">
         <div className="form-row">
           {/* Sales Data */}
           <div className="form-column">
@@ -28,6 +77,7 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
               input_type="file"
               htmlFor="sales-data"
               span_id="sales-data-info"
+              onChange={(file) => setInventoryHistoryDays(file)}
             />
           </div>
 
@@ -42,6 +92,7 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
               input_type="file"
               htmlFor="current-inventory-data"
               span_id="current-inventory-data-info"
+              onChange={(file) => setInventoryHistoryDays(file)}
             />
           </div>
         </div>
@@ -56,6 +107,7 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
               input_type="file"
               htmlFor="inventory-data"
               span_id="inventory-data-info"
+              onChange={(file) => setInventoryHistoryDays(file)}
             />
 
             {/* <label htmlFor="">Inventory Data Days</label>
@@ -65,7 +117,13 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
           {/* Coverage Days */}
           <div className="form-column">
             <label htmlFor="">Coverage Days</label>
-            <input type="text" />
+            <input
+              id="coverage-days"
+              type="text"
+              value={coverageDays}
+              onChange={(e) => setCoverageDays(e.target.value)}
+              disabled={isSubmitting}
+            />
           </div>
         </div>
 
@@ -73,15 +131,33 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
           {/* Buffer Days */}
           <div className="form-column">
             <label htmlFor="">Buffer Days</label>
-            <input type="text" />
+            <input
+              id="buffer-days"
+              type="text"
+              value={bufferDays}
+              onChange={(e) => setBufferDays(e.target.value)}
+              disabled={isSubmitting}
+            />
           </div>
           {/* Lead Time */}
           <div className="form-column">
             <label htmlFor="">Lead Time</label>
-            <input type="text" />
+            <input
+              id="lead-time"
+              type="text"
+              value={leadTime}
+              onChange={(e) => setLeadTime(e.target.value)}
+              disabled={isSubmitting}
+            />
           </div>
         </div>
-        <button className="btn-get-started">Submit</button>
+        <button
+          type="submit"
+          className="btn-get-started"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Sending..." : "Submit"}
+        </button>
       </form>
     </div>
   );

@@ -8,6 +8,7 @@ interface CustomInputFileProps {
   input_type: string;
   htmlFor: string;
   span_id: string;
+  onChange: (file: File | null) => void; // To communicate with the Father component
 }
 
 const CustomInputFile = ({
@@ -17,6 +18,7 @@ const CustomInputFile = ({
   input_type,
   htmlFor,
   span_id,
+  onChange,
 }: CustomInputFileProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = useState("No file selected");
@@ -30,6 +32,10 @@ const CustomInputFile = ({
 
     if (file) {
       setFileName(file.name);
+      onChange(file); // To send the file to the Father component
+    } else {
+      setFileName("No file selected");
+      onChange(null);
     }
   };
 
