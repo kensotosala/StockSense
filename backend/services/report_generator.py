@@ -16,6 +16,7 @@ def generar_reporte(dataframe: pd.DataFrame, marca: str):
     dataframe.to_html(html_path, index=False)
 
     return {
+        "dataframe": dataframe,
         "excel": str(excel_path),
         "html": str(html_path),
         "registros": len(dataframe),

@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Form, UploadFile, File
 from io import BytesIO
+from fastapi.responses import StreamingResponse
 import pandas as pd
 
 from services.order_processor import generar_orden
@@ -8,7 +9,6 @@ from services.report_generator import generar_reporte
 router = APIRouter()
 
 
-@router.post("/analysis")
 @router.post("/analysis")
 async def analyze_data(
     sells: UploadFile = File(...),
@@ -36,4 +36,10 @@ async def analyze_data(
 
     reporte = generar_reporte(resultado, "ALL_SPORT")
 
-    return reporte
+    csv = reporte["dataframe"].to_csv(index=False, sep=";", encoding="utf-8-sig")
+
+    return StreamingResponse(
+        BytesIO(csv.encode("utf-8-sig")),
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=ALL_SPORT_reporte.csv"},
+    )
