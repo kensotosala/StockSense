@@ -1,6 +1,8 @@
 from io import BytesIO
+from typing import Any, Dict
 import pandas as pd
-from fastapi import APIRouter, File, Form, Response, UploadFile
+from fastapi import APIRouter, File, Form, UploadFile
+from fastapi_pagination import Page, paginate
 
 from services.order_processor import generar_orden
 from services.report_generator import generar_reporte
@@ -8,7 +10,7 @@ from services.report_generator import generar_reporte
 router = APIRouter()
 
 
-@router.post("/analysis")
+@router.post("/analysis", response_model=Page[Dict[str, Any]])
 async def analyze_data(
     sells: UploadFile = File(...),
     actual_inventory: UploadFile = File(...),
@@ -16,7 +18,7 @@ async def analyze_data(
     coverage_days: int = Form(270),
     buffer_days: int = Form(25),
     lead_time: int = Form(30),
-) -> Response:
+):
 
     sells_df = pd.read_csv(BytesIO(await sells.read()), delimiter=";")
 
@@ -35,6 +37,6 @@ async def analyze_data(
 
     reporte = generar_reporte(resultado, "ALL_SPORT")
 
-    json_data = reporte["dataframe"].to_json(orient="records", force_ascii=False)
+    data_list = reporte["dataframe"].to_dict(orient="records")
 
-    return Response(content=json_data, media_type="application/json; charset=utf-8")
+    return paginate(data_list)
