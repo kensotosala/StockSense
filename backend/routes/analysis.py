@@ -1,7 +1,6 @@
-from fastapi import APIRouter, Form, UploadFile, File
 from io import BytesIO
-from fastapi.responses import StreamingResponse
 import pandas as pd
+from fastapi import APIRouter, File, Form, Response, UploadFile
 
 from services.order_processor import generar_orden
 from services.report_generator import generar_reporte
@@ -17,7 +16,7 @@ async def analyze_data(
     coverage_days: int = Form(270),
     buffer_days: int = Form(25),
     lead_time: int = Form(30),
-):
+) -> Response:
 
     sells_df = pd.read_csv(BytesIO(await sells.read()), delimiter=";")
 
@@ -36,10 +35,6 @@ async def analyze_data(
 
     reporte = generar_reporte(resultado, "ALL_SPORT")
 
-    csv = reporte["dataframe"].to_csv(index=False, sep=";", encoding="utf-8-sig")
+    json_data = reporte["dataframe"].to_json(orient="records", force_ascii=False)
 
-    return StreamingResponse(
-        BytesIO(csv.encode("utf-8-sig")),
-        media_type="text/csv",
-        headers={"Content-Disposition": "attachment; filename=ALL_SPORT_reporte.csv"},
-    )
+    return Response(content=json_data, media_type="application/json; charset=utf-8")
