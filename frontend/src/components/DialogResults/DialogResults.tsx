@@ -23,22 +23,15 @@ const DialogResults = ({ handleOpenCloseDialog, data }: DialogResultsProps) => {
       <h2>Resultados del Análisis</h2>
 
       <div style={{ overflowX: "auto", marginTop: "1rem" }}>
-        <table
-          border={1}
-          style={{
-            width: "100%",
-            borderCollapse: "collapse",
-            textAlign: "left",
-          }}
-        >
-          <thead>
+        <table className="table-results">
+          <thead className="table-head">
             <tr>
-              <th>Código</th>
+              <th className="th-codigo">Código</th>
               <th>Descripción</th>
-              <th>Existencia</th>
-              <th>Demanda Mensual</th>
-              <th>Punto Reorden</th>
-              <th>Cant. A Ordenar</th>
+              <th className="th-existencia">Existencia</th>
+              <th className="th-demanda-mensual">Demanda Mensual</th>
+              <th className="th-punto-reorden">Punto Reorden</th>
+              <th className="th-cantidad-ordenar">Cant. A Ordenar</th>
             </tr>
           </thead>
           <tbody>
@@ -46,10 +39,12 @@ const DialogResults = ({ handleOpenCloseDialog, data }: DialogResultsProps) => {
               <tr key={item.CODIGO || index}>
                 <td>{item.CODIGO}</td>
                 <td>{item.DESCRIPCION}</td>
-                <td>{item.EXISTENCIA}</td>
-                <td>{item["DEMANDA MENSUAL"]}</td>
-                <td>{item["PUNTO DE REORDEN"]}</td>
-                <td>
+                <td className="td-existencia">{item.EXISTENCIA}</td>
+                <td className="td-demanda-mensual">
+                  {item["DEMANDA MENSUAL"]}
+                </td>
+                <td className="td-punto-reorden">{item["PUNTO DE REORDEN"]}</td>
+                <td className="td-cant-ordenar">
                   <strong>{item["CANTIDAD A ORDENAR"]}</strong>
                 </td>
               </tr>

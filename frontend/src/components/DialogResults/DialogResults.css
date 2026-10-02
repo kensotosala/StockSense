@@ -22,3 +22,41 @@
   font-weight: bold;
   cursor: pointer;
 }
+
+.table-results {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  border-radius: 5px 5px 0 0;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.table-results thead tr {
+  background-color: #5c7dfd;
+  color: #fff;
+  text-align: left;
+  font-weight: bold;
+}
+
+.table-results th,
+.table-results td {
+  padding: 12px 15px;
+}
+
+.table-results tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.table-results tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.table-results tbody tr:last-of-type {
+  border-bottom: 2px solid #5c7dfd;
+}
+
+.table-results tbody tr.active-row {
+  font-weight: bold;
+  color: #5c7dfd;
+}
