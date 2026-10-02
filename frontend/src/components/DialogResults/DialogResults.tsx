@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import "./DialogResults.css";
-import type { InventoryReportItem } from "../../types/inventory";
+import type { InventoryReportResponse } from "../../types/inventory";
 
 interface DialogResultsProps {
   handleOpenCloseDialog: () => void;
-  data: InventoryReportItem[];
+  data: InventoryReportResponse;
 }
 
 const DialogResults = ({ handleOpenCloseDialog, data }: DialogResultsProps) => {
@@ -42,7 +42,7 @@ const DialogResults = ({ handleOpenCloseDialog, data }: DialogResultsProps) => {
             </tr>
           </thead>
           <tbody>
-            {data?.map((item, index) => (
+            {data.items.map((item, index) => (
               <tr key={item.CODIGO || index}>
                 <td>{item.CODIGO}</td>
                 <td>{item.DESCRIPCION}</td>

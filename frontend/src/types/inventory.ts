@@ -9,3 +9,11 @@ export interface InventoryReportItem {
   EXISTENCIA: number;
   "CANTIDAD A ORDENAR": number;
 }
+
+export interface InventoryReportResponse {
+  items: InventoryReportItem[];
+  total: number;
+  page: number;
+  size: number;
+  pages: number;
+}
