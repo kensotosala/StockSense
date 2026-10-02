@@ -1,17 +1,6 @@
 import { useEffect } from "react";
 import "./DialogResults.css";
-
-export interface InventoryReportItem {
-  CODIGO: string;
-  DESCRIPCION: string;
-  CANTIDAD: number;
-  "DEMANDA MENSUAL": number;
-  "DEMANDA DIARIA": number;
-  "STOCK SEGURIDAD": number;
-  "PUNTO DE REORDEN": number;
-  EXISTENCIA: number;
-  "CANTIDAD A ORDENAR": number;
-}
+import type { InventoryReportItem } from "../../types/inventory";
 
 interface DialogResultsProps {
   handleOpenCloseDialog: () => void;

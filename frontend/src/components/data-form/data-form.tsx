@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import CustomInputFile from "../custom-input-file/customInputFile";
 import "./data-form.css";
 import { submitInventoryData } from "../../services/InventoryService";
+import type { InventoryReportItem } from "../../types/inventory";
 import DialogResults from "../DialogResults/DialogResults";
 
 interface DataFormProps {
@@ -23,7 +24,7 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
   // Loading & Dialog States
   const [isLoading, setIsLoading] = useState(false);
   const [openResultsDialog, setOpenResultsDialog] = useState(false);
-  const [reportData, setReportData] = useState<unknown[]>([]);
+  const [reportData, setReportData] = useState<InventoryReportItem[]>([]);
 
   // Function to open the ResultsDialog
   const handleToggleResultsDialog = () => {

@@ -1,3 +1,5 @@
+import type { InventoryReportItem } from "../types/inventory";
+
 export interface InventoryPayload {
   sells: File;
   actualInventory: File;
@@ -7,13 +9,9 @@ export interface InventoryPayload {
   leadTime: string;
 }
 
-export interface ReportItem {
-  [key: string]: unknown;
-}
-
 export const submitInventoryData = async (
   data: InventoryPayload,
-): Promise<ReportItem[]> => {
+): Promise<InventoryReportItem[]> => {
   const formData = new FormData();
   formData.append("sells", data.sells);
   formData.append("actual_inventory", data.actualInventory);
@@ -34,7 +32,7 @@ export const submitInventoryData = async (
       throw new Error(`Error en el servidor: ${response.statusText}`);
     }
 
-    const result: ReportItem[] = await response.json();
+    const result: InventoryReportItem[] = await response.json();
     console.log(result);
     return result;
   } catch (error) {
