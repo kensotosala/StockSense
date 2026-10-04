@@ -17,3 +17,12 @@ export interface InventoryReportResponse {
   size: number;
   pages: number;
 }
+
+export interface InventoryPayload {
+  sells: File;
+  actualInventory: File;
+  inventoryHistoryDays: string;
+  coverageDays: string;
+  bufferDays: string;
+  leadTime: string;
+}

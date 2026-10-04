@@ -1,13 +1,23 @@
 import { useEffect } from "react";
 import "./DialogResults.css";
-import type { InventoryReportResponse } from "../../types/inventory";
+import type { InventoryReportItem } from "../../types/inventory";
+import Pagination from "../Pagination";
 
 interface DialogResultsProps {
   handleOpenCloseDialog: () => void;
-  data: InventoryReportResponse;
+  data: InventoryReportItem[];
+  totalRows: number;
+  rowsPerPage: number;
+  setCurrentPage: (page: number) => void;
 }
 
-const DialogResults = ({ handleOpenCloseDialog, data }: DialogResultsProps) => {
+const DialogResults = ({
+  handleOpenCloseDialog,
+  data,
+  totalRows,
+  rowsPerPage,
+  setCurrentPage,
+}: DialogResultsProps) => {
   useEffect(() => {
     console.log("Datos recibidos del backend:", data);
   }, [data]);
@@ -35,7 +45,7 @@ const DialogResults = ({ handleOpenCloseDialog, data }: DialogResultsProps) => {
             </tr>
           </thead>
           <tbody>
-            {data.items.map((item, index) => (
+            {data.map((item, index) => (
               <tr key={item.CODIGO || index}>
                 <td>{item.CODIGO}</td>
                 <td>{item.DESCRIPCION}</td>
@@ -52,6 +62,11 @@ const DialogResults = ({ handleOpenCloseDialog, data }: DialogResultsProps) => {
           </tbody>
         </table>
       </div>
+      <Pagination
+        totalRows={totalRows}
+        rowsPerPage={rowsPerPage}
+        setCurrentPage={setCurrentPage}
+      />
     </div>
   );
 };

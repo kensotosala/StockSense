@@ -1,13 +1,7 @@
-import type { InventoryReportResponse } from "../types/inventory";
-
-export interface InventoryPayload {
-  sells: File;
-  actualInventory: File;
-  inventoryHistoryDays: string;
-  coverageDays: string;
-  bufferDays: string;
-  leadTime: string;
-}
+import type {
+  InventoryPayload,
+  InventoryReportResponse,
+} from "../types/inventory";
 
 export const submitInventoryData = async (
   data: InventoryPayload,
