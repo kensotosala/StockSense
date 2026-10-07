@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import "./DialogResults.css";
 import type { InventoryReportItem } from "../../types/inventory";
-import Pagination from "../Pagination";
+import Pagination from "../Pagination/Pagination";
 
 interface DialogResultsProps {
   handleOpenCloseDialog: () => void;

@@ -1,3 +1,5 @@
+import "./Pagination.css";
+
 interface PaginationProps {
   totalRows: number;
   rowsPerPage: number;
