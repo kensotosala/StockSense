@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import "./DialogResults.css";
 import type { InventoryReportItem } from "../../types/inventory";
 import Pagination from "../Pagination/Pagination";
+import ExportOptions from "../ExportOptions/ExportOptions";
 
 interface DialogResultsProps {
   handleOpenCloseDialog: () => void;
@@ -31,6 +32,8 @@ const DialogResults = ({
       </div>
 
       <h2>Resultados del Análisis</h2>
+
+      <ExportOptions />
 
       <div style={{ overflowX: "auto", marginTop: "1rem" }}>
         <table className="table-results">

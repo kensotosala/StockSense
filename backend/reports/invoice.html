@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+
+    <style>
+      @page {
+        size: A4 landscape;
+        margin: 25px 25px 35px 25px;
+
+        @bottom-right {
+          content: "Página " counter(page);
+          font-size: 8px;
+          color: #64748b;
+        }
+      }
+
+      body {
+        font-family: Helvetica, Arial, sans-serif;
+        color: #1e293b;
+        font-size: 9px;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* =========================
+           HEADER
+        ========================= */
+
+      .header {
+        width: 100%;
+        margin-bottom: 20px;
+        border-bottom: 3px solid #2563eb;
+        padding-bottom: 14px;
+      }
+
+      .header-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .header-left {
+        width: 70%;
+        vertical-align: middle;
+      }
+
+      .header-right {
+        width: 30%;
+        text-align: right;
+        vertical-align: middle;
+      }
+
+      .title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #0f172a;
+        margin: 0;
+      }
+
+      .subtitle {
+        font-size: 10px;
+        color: #64748b;
+        margin-top: 5px;
+      }
+
+      .date {
+        font-size: 9px;
+        color: #64748b;
+      }
+
+      /* =========================
+           SUMMARY CARDS
+        ========================= */
+
+      .summary {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+
+      .summary-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 8px 0;
+      }
+
+      .card {
+        background-color: #f8fafc;
+        border: 1px solid #e2e8f0;
+        padding: 12px;
+        height: 45px;
+        vertical-align: middle;
+      }
+
+      .card-blue {
+        background-color: #eff6ff;
+        border-left: 4px solid #2563eb;
+      }
+
+      .card-green {
+        background-color: #f0fdf4;
+        border-left: 4px solid #16a34a;
+      }
+
+      .card-orange {
+        background-color: #fff7ed;
+        border-left: 4px solid #ea580c;
+      }
+
+      .card-label {
+        font-size: 8px;
+        color: #64748b;
+        text-transform: uppercase;
+        font-weight: bold;
+      }
+
+      .card-value {
+        font-size: 18px;
+        color: #0f172a;
+        font-weight: bold;
+        margin-top: 4px;
+      }
+
+      /* =========================
+           SECTION
+        ========================= */
+
+      .section-title {
+        font-size: 13px;
+        font-weight: bold;
+        color: #0f172a;
+        margin-bottom: 8px;
+      }
+
+      /* =========================
+           MAIN TABLE
+        ========================= */
+
+      .report-table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+      }
+
+      .report-table thead {
+        display: table-header-group;
+      }
+
+      .report-table th {
+        background-color: #1e3a8a;
+        color: white;
+        font-size: 7.5px;
+        font-weight: bold;
+        text-align: center;
+        padding: 8px 5px;
+        border: 1px solid #1e3a8a;
+      }
+
+      .report-table td {
+        padding: 6px 5px;
+        border-bottom: 1px solid #e2e8f0;
+        vertical-align: middle;
+        font-size: 7.5px;
+      }
+
+      .report-table tbody tr:nth-child(even) {
+        background-color: #f8fafc;
+      }
+
+      .report-table tbody tr {
+        page-break-inside: avoid;
+      }
+
+      /* =========================
+           COLUMN ALIGNMENT
+        ========================= */
+
+      .col-code {
+        width: 8%;
+        text-align: center;
+      }
+
+      .col-description {
+        width: 24%;
+        text-align: left;
+      }
+
+      .col-number {
+        width: 8.5%;
+        text-align: right;
+      }
+
+      .col-order {
+        width: 10%;
+        text-align: right;
+      }
+
+      /* =========================
+           VALUES
+        ========================= */
+
+      .number {
+        text-align: right;
+        white-space: nowrap;
+      }
+
+      .code {
+        text-align: center;
+        font-weight: bold;
+        color: #475569;
+      }
+
+      .description {
+        text-align: left;
+        font-weight: 500;
+      }
+
+      .order-quantity {
+        text-align: right;
+        font-weight: bold;
+        color: #166534;
+        background-color: #dcfce7;
+      }
+
+      .stock-low {
+        color: #b91c1c;
+        font-weight: bold;
+      }
+
+      /* =========================
+           FOOTER
+        ========================= */
+
+      .footer {
+        margin-top: 18px;
+        padding-top: 10px;
+        border-top: 1px solid #e2e8f0;
+        font-size: 7.5px;
+        color: #94a3b8;
+      }
+
+      .footer-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .footer-left {
+        text-align: left;
+      }
+
+      .footer-right {
+        text-align: right;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- HEADER -->
+
+    <div class="header">
+      <table class="header-table">
+        <tr>
+          <td class="header-left">
+            <div class="title">Reporte de Inventario</div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- TABLE -->
+
+    <div class="section-title">Detalle del inventario</div>
+
+    <table class="report-table">
+      <thead>
+        <tr>
+          <th class="col-code">Código</th>
+
+          <th class="col-description">Descripción</th>
+
+          <th class="col-number">Ventas</th>
+
+          <th class="col-number">Demanda<br />mensual</th>
+
+          <th class="col-number">Demanda<br />diaria</th>
+
+          <th class="col-number">Stock<br />seguridad</th>
+
+          <th class="col-number">Punto<br />reorden</th>
+
+          <th class="col-number">Existencia</th>
+
+          <th class="col-order">Cantidad<br />a ordenar</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for row in data %}
+
+        <tr>
+          <td class="code">{{ row["CODIGO"] }}</td>
+
+          <td class="description">{{ row["DESCRIPCION"] }}</td>
+
+          <td class="number">{{ "{:,.0f}".format(row["CANTIDAD"]) }}</td>
+
+          <td class="number">{{ "{:,.0f}".format(row["DEMANDA MENSUAL"]) }}</td>
+
+          <td class="number">{{ "{:,.2f}".format(row["DEMANDA DIARIA"]) }}</td>
+
+          <td class="number">{{ "{:,.0f}".format(row["STOCK SEGURIDAD"]) }}</td>
+
+          <td class="number">
+            {{ "{:,.0f}".format(row["PUNTO DE REORDEN"]) }}
+          </td>
+
+          <td class="number">{{ "{:,.0f}".format(row["EXISTENCIA"]) }}</td>
+
+          <td class="order-quantity">
+            {{ "{:,.0f}".format(row["CANTIDAD A ORDENAR"]) }}
+          </td>
+        </tr>
+
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <!-- FOOTER -->
+
+    <div class="footer">
+      <table class="footer-table">
+        <tr>
+          <td class="footer-left">Reporte generado automáticamente.</td>
+
+          <td class="footer-right">Sistema de gestión de inventario</td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

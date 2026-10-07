@@ -1,0 +1,18 @@
+.export-options-container {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.option {
+  background: #5c7cfd;
+  padding: 10px;
+  border-radius: 5px;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.option:hover {
+  background: #1342ff;
+}
