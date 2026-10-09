@@ -1,11 +1,14 @@
 import io
 from datetime import datetime
+from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader
 from xhtml2pdf import pisa
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 env = Environment(
-    loader=FileSystemLoader("."),
+    loader=FileSystemLoader(BASE_DIR),
 )
 
 

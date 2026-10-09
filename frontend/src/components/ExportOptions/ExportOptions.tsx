@@ -1,10 +1,30 @@
 import "./ExportOptions.css";
 
-const ExportOptions = () => {
+interface ExportOptionsProps {
+  onExportPdf: () => void;
+  isExportingPdf: boolean;
+}
+
+const ExportOptions = ({ onExportPdf, isExportingPdf }: ExportOptionsProps) => {
   return (
     <div className="export-options-container">
-      <div className="option option-pdf">PDF</div>
-      <div className="option option-csv">CSV</div>
+      <button
+        type="button"
+        className="option option-pdf"
+        onClick={onExportPdf}
+        disabled={isExportingPdf}
+      >
+        {isExportingPdf ? "Generando PDF..." : "PDF"}
+      </button>
+
+      <button
+        type="button"
+        className="option option-csv"
+        disabled
+        title="Exportación CSV pendiente de implementar"
+      >
+        CSV
+      </button>
     </div>
   );
 };

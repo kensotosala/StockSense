@@ -30,7 +30,7 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+  const [rowsPerPage] = useState<number>(10);
 
   const lastPostIndex = currentPage * rowsPerPage;
   const firstPostIndex = lastPostIndex - rowsPerPage;
@@ -82,11 +82,17 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
         <div className="spinner"></div>
       ) : openResultsDialog && reportData ? (
         <DialogResults
-          data={currentData ?? []}
+          data={currentData}
           handleOpenCloseDialog={handleToggleResultsDialog}
           totalRows={reportData.items.length}
           rowsPerPage={rowsPerPage}
           setCurrentPage={setCurrentPage}
+          sells={salesData!}
+          actualInventory={currentInventory!}
+          inventoryHistoryDays={Number(inventoryHistoryDays)}
+          coverageDays={Number(coverageDays)}
+          bufferDays={Number(bufferDays)}
+          leadTime={Number(leadTime)}
         />
       ) : (
         <div className="form-container">

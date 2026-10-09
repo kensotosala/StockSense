@@ -1,8 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./DialogResults.css";
 import type { InventoryReportItem } from "../../types/inventory";
 import Pagination from "../Pagination/Pagination";
 import ExportOptions from "../ExportOptions/ExportOptions";
+import { DownloadPDFReport } from "../../services/ExportService";
 
 interface DialogResultsProps {
   handleOpenCloseDialog: () => void;
@@ -10,6 +11,13 @@ interface DialogResultsProps {
   totalRows: number;
   rowsPerPage: number;
   setCurrentPage: (page: number) => void;
+
+  sells: File;
+  actualInventory: File;
+  inventoryHistoryDays: number;
+  coverageDays: number;
+  bufferDays: number;
+  leadTime: number;
 }
 
 const DialogResults = ({
@@ -18,10 +26,43 @@ const DialogResults = ({
   totalRows,
   rowsPerPage,
   setCurrentPage,
+  sells,
+  actualInventory,
+  inventoryHistoryDays,
+  coverageDays,
+  bufferDays,
+  leadTime,
 }: DialogResultsProps) => {
+  const [isExportingPdf, setIsExportingPdf] = useState(false);
+  const [exportError, setExportError] = useState<string | null>(null);
+
   useEffect(() => {
     console.log("Datos recibidos del backend:", data);
   }, [data]);
+
+  const handleExportPdf = async () => {
+    try {
+      setIsExportingPdf(true);
+      setExportError(null);
+
+      await DownloadPDFReport({
+        sells,
+        actualInventory,
+        inventoryHistoryDays,
+        coverageDays,
+        bufferDays,
+        leadTime,
+      });
+    } catch (error) {
+      setExportError(
+        error instanceof Error
+          ? error.message
+          : "Ocurrió un error al exportar el PDF.",
+      );
+    } finally {
+      setIsExportingPdf(false);
+    }
+  };
 
   return (
     <div className="form-container">
@@ -33,7 +74,16 @@ const DialogResults = ({
 
       <h2>Resultados del Análisis</h2>
 
-      <ExportOptions />
+      <ExportOptions
+        onExportPdf={handleExportPdf}
+        isExportingPdf={isExportingPdf}
+      />
+
+      {exportError && (
+        <p role="alert" className="export-error">
+          {exportError}
+        </p>
+      )}
 
       <div style={{ overflowX: "auto", marginTop: "1rem" }}>
         <table className="table-results">
