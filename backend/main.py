@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routes.analysis import router as analysis_router
+from routes.analysis_routes import router as analysis_router
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_pagination import add_pagination
 

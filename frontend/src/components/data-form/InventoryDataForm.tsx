@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import CustomInputFile from "../custom-input-file/customInputFile";
-import "./data-form.css";
+import "./InventoryDataForm.css";
 import { submitInventoryData } from "../../services/InventoryService";
 import type { InventoryReportResponse } from "../../types/inventory";
 import DialogResults from "../DialogResults/DialogResults";
@@ -10,27 +10,23 @@ interface DataFormProps {
 }
 
 const DataForm = ({ handleToggleDialog }: DataFormProps) => {
-  // File States
   const [salesData, setSalesData] = useState<File | null>(null);
   const [currentInventory, setCurrentInventory] = useState<File | null>(null);
 
-  // Text States
   const [inventoryHistoryDays, setInventoryHistoryDays] = useState("");
-
   const [coverageDays, setCoverageDays] = useState("");
   const [bufferDays, setBufferDays] = useState("");
   const [leadTime, setLeadTime] = useState("");
 
-  // Loading & Dialog States
   const [isLoading, setIsLoading] = useState(false);
   const [openResultsDialog, setOpenResultsDialog] = useState(false);
+
   const [reportData, setReportData] = useState<InventoryReportResponse | null>(
     null,
   );
 
-  // Pagination states
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [rowsPerPage] = useState<number>(10);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage] = useState(10);
 
   const lastPostIndex = currentPage * rowsPerPage;
   const firstPostIndex = lastPostIndex - rowsPerPage;
@@ -38,13 +34,11 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
   const currentData =
     reportData?.items.slice(firstPostIndex, lastPostIndex) ?? [];
 
-  // Function to open the ResultsDialog
   const handleToggleResultsDialog = () => {
     setOpenResultsDialog((prev) => !prev);
   };
 
-  // Function to process and send the form
-  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!salesData || !currentInventory) {
@@ -55,7 +49,6 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
     setIsLoading(true);
 
     try {
-      // Waiting the API response
       const report = await submitInventoryData({
         sells: salesData,
         actualInventory: currentInventory,
@@ -65,11 +58,11 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
         leadTime,
       });
 
-      // Save the data y open the DialogResults
       setReportData(report);
+      setCurrentPage(1);
       setOpenResultsDialog(true);
     } catch (error) {
-      console.error("Hubo un error al intentar guardar el formulario: ", error);
+      console.error("Error al procesar el formulario:", error);
       alert("Ocurrió un error al procesar los datos.");
     } finally {
       setIsLoading(false);
@@ -83,26 +76,26 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
       ) : openResultsDialog && reportData ? (
         <DialogResults
           data={currentData}
+          reportId={reportData.report_id}
           handleOpenCloseDialog={handleToggleResultsDialog}
           totalRows={reportData.items.length}
           rowsPerPage={rowsPerPage}
           setCurrentPage={setCurrentPage}
-          sells={salesData!}
-          actualInventory={currentInventory!}
-          inventoryHistoryDays={Number(inventoryHistoryDays)}
-          coverageDays={Number(coverageDays)}
-          bufferDays={Number(bufferDays)}
-          leadTime={Number(leadTime)}
         />
       ) : (
         <div className="form-container">
           <div className="wrapper-btn-close">
-            <button onClick={handleToggleDialog} className="btn-close">
+            <button
+              type="button"
+              onClick={handleToggleDialog}
+              className="btn-close"
+            >
               X
             </button>
           </div>
 
           <h2>Completa el Formulario</h2>
+
           <form onSubmit={handleSubmit} className="data-form">
             <div className="form-row">
               <div className="form-column">
@@ -113,7 +106,7 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
                   input_type="file"
                   htmlFor="sales-data"
                   span_id="sales-data-info"
-                  onChange={(file) => setSalesData(file)}
+                  onChange={setSalesData}
                 />
               </div>
 
@@ -125,7 +118,7 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
                   input_type="file"
                   htmlFor="current-inventory-data"
                   span_id="current-inventory-data-info"
-                  onChange={(file) => setCurrentInventory(file)}
+                  onChange={setCurrentInventory}
                 />
               </div>
             </div>
@@ -135,7 +128,8 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
                 <label htmlFor="history-days">Inventory Data Days</label>
                 <input
                   id="history-days"
-                  type="text"
+                  type="number"
+                  min="1"
                   value={inventoryHistoryDays}
                   onChange={(e) => setInventoryHistoryDays(e.target.value)}
                   disabled={isLoading}
@@ -146,7 +140,8 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
                 <label htmlFor="coverage-days">Coverage Days</label>
                 <input
                   id="coverage-days"
-                  type="text"
+                  type="number"
+                  min="1"
                   value={coverageDays}
                   onChange={(e) => setCoverageDays(e.target.value)}
                   disabled={isLoading}
@@ -159,7 +154,8 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
                 <label htmlFor="buffer-days">Buffer Days</label>
                 <input
                   id="buffer-days"
-                  type="text"
+                  type="number"
+                  min="0"
                   value={bufferDays}
                   onChange={(e) => setBufferDays(e.target.value)}
                   disabled={isLoading}
@@ -170,7 +166,8 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
                 <label htmlFor="lead-time">Lead Time</label>
                 <input
                   id="lead-time"
-                  type="text"
+                  type="number"
+                  min="0"
                   value={leadTime}
                   onChange={(e) => setLeadTime(e.target.value)}
                   disabled={isLoading}
@@ -183,7 +180,7 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
               className="btn-get-started"
               disabled={isLoading}
             >
-              {isLoading ? "Sending..." : "Submit"}
+              Submit
             </button>
           </form>
         </div>

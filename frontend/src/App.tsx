@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import DataForm from "./components/data-form/data-form";
+import DataForm from "./components/data-form/InventoryDataForm";
 
 const App = () => {
   const [openFormDialog, setOpenFormDialog] = useState(false);

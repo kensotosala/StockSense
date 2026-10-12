@@ -48,7 +48,7 @@ label {
   font-weight: bold;
 }
 
-input[type="text"] {
+input:is([type="text"], [type="number"]) {
   width: 100%;
   padding: 14px 16px;
   font-size: 1rem;
@@ -61,7 +61,7 @@ input[type="text"] {
   transition: all 0.2s ease;
 }
 
-input[type="text"]:focus {
+input:is([type="text"], [type="number"]):focus {
   background-color: #ffffff;
   border-color: #1cb0f6;
   box-shadow: 0 0 0 4px rgba(28, 176, 246, 0.2);

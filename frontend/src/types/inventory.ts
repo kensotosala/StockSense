@@ -11,6 +11,7 @@ export interface InventoryReportItem {
 }
 
 export interface InventoryReportResponse {
+  report_id: string;
   items: InventoryReportItem[];
   total: number;
   page: number;
