@@ -7,9 +7,11 @@
   flex-direction: column;
   align-items: center;
   width: 1000px;
+  max-width: 90vw; /* Asegura responsividad en pantallas menores a 1000px */
+  box-sizing: border-box;
 }
 
-/*Close Button*/
+/* Close Button */
 .wrapper-btn-close {
   width: 100%;
   display: flex;
@@ -21,15 +23,17 @@
   border: none;
   font-weight: bold;
   cursor: pointer;
+  font-size: 1.1rem;
 }
 
 .table-results {
+  width: 100%; /* Forzar a la tabla a ocupar el contenedor completo con scroll */
   border-collapse: collapse;
   margin: 25px 0;
   font-size: 0.9em;
   border-radius: 5px 5px 0 0;
   overflow: hidden;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
 }
 
 .table-results thead tr {

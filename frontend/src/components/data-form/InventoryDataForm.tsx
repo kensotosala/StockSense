@@ -26,7 +26,7 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
   );
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage] = useState(10);
+  const [rowsPerPage] = useState(25);
 
   const lastPostIndex = currentPage * rowsPerPage;
   const firstPostIndex = lastPostIndex - rowsPerPage;

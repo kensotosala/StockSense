@@ -1,6 +1,8 @@
 import io
 from datetime import datetime
 from pathlib import Path
+import csv
+
 
 from jinja2 import Environment, FileSystemLoader
 from xhtml2pdf import pisa
@@ -33,3 +35,25 @@ def exportar_pdf(datos: dict) -> tuple[io.BytesIO, str]:
     file_name = f"report_{datetime.now():%Y%m%d_%H%M%S}.pdf"
 
     return pdf_buffer, file_name
+
+
+def exportar_csv(datos: list[dict]) -> tuple[io.BytesIO, str]:
+    text_buffer = io.StringIO()
+
+    if datos:
+        columnas = list(datos[0].keys())
+        writer = csv.DictWriter(text_buffer, fieldnames=columnas)
+
+        writer.writeheader()
+        writer.writerows(datos)
+    else:
+        writer = csv.writer(text_buffer)
+
+    csv_bytes = text_buffer.getvalue().encode("utf-8")
+    csv_buffer = io.BytesIO(csv_bytes)
+
+    csv_buffer.seek(0)
+
+    file_name = f"report_{datetime.now():%Y%m%d_%H%M%S}.csv"
+
+    return (csv_buffer, file_name)

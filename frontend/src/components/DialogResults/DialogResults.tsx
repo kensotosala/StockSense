@@ -9,6 +9,7 @@ interface DialogResultsProps {
   reportId: string;
   totalRows: number;
   rowsPerPage: number;
+  currentPage: number; // Agregado para controlar el estado de la paginación activa
   setCurrentPage: (page: number) => void;
 }
 
@@ -18,6 +19,7 @@ const DialogResults = ({
   reportId,
   totalRows,
   rowsPerPage,
+  currentPage,
   setCurrentPage,
 }: DialogResultsProps) => {
   const dataTable = Array.isArray(data) ? data : [];
@@ -38,7 +40,7 @@ const DialogResults = ({
 
       <ExportOptions reportId={reportId} />
 
-      <div style={{ overflowX: "auto", marginTop: "1rem" }}>
+      <div style={{ overflowX: "auto", width: "100%", marginTop: "1rem" }}>
         <table className="table-results">
           <thead className="table-head">
             <tr>
@@ -71,7 +73,9 @@ const DialogResults = ({
               ))
             ) : (
               <tr>
-                <td colSpan={6}>No hay resultados disponibles.</td>
+                <td colSpan={6} style={{ textAlign: "center" }}>
+                  No hay resultados disponibles.
+                </td>
               </tr>
             )}
           </tbody>
@@ -81,6 +85,7 @@ const DialogResults = ({
       <Pagination
         totalRows={totalRows}
         rowsPerPage={rowsPerPage}
+        currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       />
     </div>

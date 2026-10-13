@@ -6,7 +6,7 @@ from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 from fastapi.responses import StreamingResponse
 
 from services.order_processor_service import generar_orden
-from services.report_export_service import exportar_pdf
+from services.report_export_service import exportar_csv, exportar_pdf
 
 router = APIRouter()
 
@@ -77,6 +77,25 @@ async def download_pdf_report(report_id: str):
     return StreamingResponse(
         pdf_buffer,
         media_type="application/pdf",
+        headers={
+            "Content-Disposition": f'attachment; filename="{file_name}"',
+        },
+    )
+
+
+@router.get("/download_csv_report/{report_id}")
+async def download_csv_report(report_id: str):
+    reporte = reports_cache.get(report_id)
+
+    if reporte is None:
+        raise HTTPException(status_code=404, detail="Reporte no encontrado o expirado")
+
+    # Genera CSV
+    csv_buffer, file_name = exportar_csv(reporte)
+
+    return StreamingResponse(
+        csv_buffer,
+        media_type="text/csv",
         headers={
             "Content-Disposition": f'attachment; filename="{file_name}"',
         },

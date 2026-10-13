@@ -1,6 +1,9 @@
 import { useState } from "react";
 import "./ExportOptions.css";
-import { DownloadPDFReport } from "../../services/ExportService";
+import {
+  DownloadCSVReport,
+  DownloadPDFReport,
+} from "../../services/ExportService";
 
 interface ExportOptionsProps {
   reportId: string;
@@ -32,6 +35,27 @@ const ExportOptions = ({ reportId }: ExportOptionsProps) => {
     }
   };
 
+  const handleExportCSV = async () => {
+    if (!reportId) {
+      setError("No se encontró el identificador del reporte.");
+      return;
+    }
+
+    try {
+      setIsExporting(true);
+      setError(null);
+
+      await DownloadCSVReport(reportId);
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error ? err.message : "No se pudo generar el CSV.";
+      setError(message);
+      console.error("Error al exportar CSV:", err);
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
   return (
     <div className="export-options-container">
       <button
@@ -47,11 +71,11 @@ const ExportOptions = ({ reportId }: ExportOptionsProps) => {
 
       <button
         type="button"
-        className="option option-csv"
-        disabled
-        title="Exportación CSV pendiente de implementar"
+        className="option option-pdf"
+        onClick={handleExportCSV}
+        disabled={isExporting}
       >
-        CSV
+        {isExporting ? "Generando CSV..." : "Exportar a CSV"}
       </button>
     </div>
   );
