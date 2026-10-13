@@ -37,23 +37,28 @@ def exportar_pdf(datos: dict) -> tuple[io.BytesIO, str]:
     return pdf_buffer, file_name
 
 
-def exportar_csv(datos: list[dict]) -> tuple[io.BytesIO, str]:
-    text_buffer = io.StringIO()
+def exportar_csv(
+    datos: list[dict],
+) -> tuple[io.BytesIO, str]:
+    text_buffer = io.StringIO(newline="")
 
     if datos:
         columnas = list(datos[0].keys())
-        writer = csv.DictWriter(text_buffer, fieldnames=columnas)
+
+        writer = csv.DictWriter(
+            text_buffer,
+            fieldnames=columnas,
+            delimiter=";",
+            extrasaction="ignore",
+        )
 
         writer.writeheader()
         writer.writerows(datos)
-    else:
-        writer = csv.writer(text_buffer)
 
-    csv_bytes = text_buffer.getvalue().encode("utf-8")
-    csv_buffer = io.BytesIO(csv_bytes)
+    csv_buffer = io.BytesIO(text_buffer.getvalue().encode("utf-8-sig"))
 
     csv_buffer.seek(0)
 
     file_name = f"report_{datetime.now():%Y%m%d_%H%M%S}.csv"
 
-    return (csv_buffer, file_name)
+    return csv_buffer, file_name

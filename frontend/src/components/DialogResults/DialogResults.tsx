@@ -38,7 +38,7 @@ const DialogResults = ({
 
       <h2>Resultados del Análisis</h2>
 
-      <ExportOptions reportId={reportId} />
+      <ExportOptions reportId={reportId} data={data} />
 
       <div style={{ overflowX: "auto", width: "100%", marginTop: "1rem" }}>
         <table className="table-results">

@@ -4,12 +4,14 @@ import {
   DownloadCSVReport,
   DownloadPDFReport,
 } from "../../services/ExportService";
+import type { InventoryReportItem } from "../../types/inventory";
 
 interface ExportOptionsProps {
   reportId: string;
+  data: InventoryReportItem[];
 }
 
-const ExportOptions = ({ reportId }: ExportOptionsProps) => {
+const ExportOptions = ({ reportId, data }: ExportOptionsProps) => {
   const [error, setError] = useState<string | null>(null);
   const [isExporting, setIsExporting] = useState(false);
 
@@ -23,7 +25,7 @@ const ExportOptions = ({ reportId }: ExportOptionsProps) => {
       setIsExporting(true);
       setError(null);
 
-      await DownloadPDFReport(reportId);
+      await DownloadPDFReport(data);
     } catch (err: unknown) {
       const message =
         err instanceof Error ? err.message : "No se pudo generar el PDF.";
@@ -45,7 +47,7 @@ const ExportOptions = ({ reportId }: ExportOptionsProps) => {
       setIsExporting(true);
       setError(null);
 
-      await DownloadCSVReport(reportId);
+      await DownloadCSVReport(data);
     } catch (err: unknown) {
       const message =
         err instanceof Error ? err.message : "No se pudo generar el CSV.";

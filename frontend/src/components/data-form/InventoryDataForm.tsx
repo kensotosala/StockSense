@@ -81,6 +81,7 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
           totalRows={reportData.items.length}
           rowsPerPage={rowsPerPage}
           setCurrentPage={setCurrentPage}
+          currentPage={0}
         />
       ) : (
         <div className="form-container">
