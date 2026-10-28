@@ -1,10 +1,11 @@
 import logging
 from typing import Optional
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field, ConfigDict
 
+from core.security import get_current_user
 from services.report_export_service import exportar_csv, exportar_pdf
 
 router = APIRouter()
@@ -25,7 +26,10 @@ class InventoryItem(BaseModel):
     CANTIDAD_A_ORDENAR: float = Field(alias="CANTIDAD A ORDENAR")
 
 
-@router.post("/download_csv_report")
+@router.post(
+    "/download_csv_report",
+    dependencies=[Depends(get_current_user)],
+)
 async def download_csv_report(
     reporte: list[InventoryItem],
 ):
@@ -49,7 +53,10 @@ async def download_csv_report(
     )
 
 
-@router.post("/download_pdf_report")
+@router.post(
+    "/download_pdf_report",
+    dependencies=[Depends(get_current_user)],
+)
 async def download_pdf_report(
     reporte: list[InventoryItem],
 ):

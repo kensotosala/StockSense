@@ -4,7 +4,8 @@ from fastapi import FastAPI, Query
 from sqlmodel import select
 from database.engine import SessionDep, create_db_and_tables
 from models.user import User
-from routes.analysis_routes import router as analysis_router
+from routes.auth import router as auth_router
+from routes.analysis import router as analysis_router
 from routes.users import router as users_router
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_pagination import add_pagination
@@ -29,6 +30,7 @@ app.add_middleware(
 )
 
 # Registrar endpoints
+app.include_router(auth_router, prefix="/api", tags=["Auth"])
 app.include_router(analysis_router, prefix="/api", tags=["Analysis"])
 app.include_router(users_router, prefix="/api", tags=["Users"])
 
