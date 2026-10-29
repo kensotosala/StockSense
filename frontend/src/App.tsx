@@ -1,47 +1,13 @@
-import { useEffect, useState } from "react";
+import { RouterProvider } from "react-router-dom";
+import { AuthProvider } from "../contexts/AuthProvider";
 import "./App.css";
-import DataForm from "./components/data-form/InventoryDataForm";
+import router from "./router";
 
 const App = () => {
-  const [openFormDialog, setOpenFormDialog] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    console.log("App running");
-  }, []);
-
-  // Function to open or close the dialog
-  const handleToggleDialog = () => {
-    if (!openFormDialog) {
-      setIsLoading(true);
-
-      // Simulates the loading time
-      setTimeout(() => {
-        setIsLoading(false);
-        setOpenFormDialog(true);
-      }, 500);
-    } else {
-      setOpenFormDialog(false);
-    }
-  };
-
   return (
-    <main className="app">
-      <header className="header">
-        <h1 className="app-title">StockSense</h1>
-        <p className="app-subtitle">Inventory Intelligence Platform</p>
-      </header>
-
-      {isLoading ? (
-        <div className="spinner"></div>
-      ) : openFormDialog ? (
-        <DataForm handleToggleDialog={handleToggleDialog} />
-      ) : (
-        <button className="btn-get-started" onClick={handleToggleDialog}>
-          Get Started
-        </button>
-      )}
-    </main>
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   );
 };
 
