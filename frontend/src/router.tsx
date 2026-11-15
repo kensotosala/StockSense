@@ -7,6 +7,7 @@ import IsAuthenticated from "./utility/IsAuthenticated";
 import IsAuthorized from "./utility/IsAuthorized";
 import AuthentictedAndUnauthorized from "./pages/authenticted-and-authorized";
 import AuthentictedAndAuthorized from "./pages/authenticted-and-unauthorized";
+import StartAnalysis from "./pages/start-analysis";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,14 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/start-analysis",
+    element: (
+      <IsAuthenticated>
+        <StartAnalysis />
+      </IsAuthenticated>
+    ),
   },
   {
     path: "*",

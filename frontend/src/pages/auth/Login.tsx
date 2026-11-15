@@ -21,7 +21,7 @@ export default function Login() {
     setError(null);
     try {
       await login({ username, password });
-      navigate("/");
+      navigate("/start-analysis");
     } catch (error) {
       setError(error instanceof Error ? error.message : "Login failed.");
     }
@@ -45,7 +45,7 @@ export default function Login() {
               <span className="mb-2 block font-medium">Correo electrónico</span>
               <input
                 name="email"
-                type="email"
+                type="text"
                 autoComplete="email"
                 required
                 className="w-full rounded-lg border border-gray-300 p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"

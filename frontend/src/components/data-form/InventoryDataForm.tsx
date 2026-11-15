@@ -38,7 +38,7 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
     setOpenResultsDialog((prev) => !prev);
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!salesData || !currentInventory) {
@@ -95,7 +95,7 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
             </button>
           </div>
 
-          <h2>Completa el Formulario</h2>
+          <h2 className="text-2xl font-bold mb-5">Completa el Formulario</h2>
 
           <form onSubmit={handleSubmit} className="data-form">
             <div className="form-row">
@@ -176,13 +176,15 @@ const DataForm = ({ handleToggleDialog }: DataFormProps) => {
               </div>
             </div>
 
-            <button
-              type="submit"
-              className="btn-get-started"
-              disabled={isLoading}
-            >
-              Submit
-            </button>
+            <div className="flex flex-col items-center mt-5">
+              <button
+                type="submit"
+                className="bg-black text-white p-5 rounded-md hover:bg-blue-700 w-sm mx-0"
+                disabled={isLoading}
+              >
+                Submit
+              </button>
+            </div>
           </form>
         </div>
       )}

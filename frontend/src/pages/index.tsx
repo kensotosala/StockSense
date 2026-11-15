@@ -10,7 +10,7 @@ export const Index = () => {
 
       {token ? (
         <>
-          <Link to="/unauthenticated" style={{ padding: 10 }}>
+          {/* <Link to="/unauthenticated" style={{ padding: 10 }}>
             unauthenticated
           </Link>
           <Link to="/authenticated" style={{ padding: 10 }}>
@@ -21,7 +21,7 @@ export const Index = () => {
           </Link>
           <Link to="/authenticated-and-authorized" style={{ padding: 10 }}>
             authenticated and authorized
-          </Link>
+          </Link> */}
           <button onClick={() => logout()}>Logout</button>
         </>
       ) : (
