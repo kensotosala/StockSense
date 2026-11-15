@@ -1,6 +1,10 @@
 import { createContext, useContext } from "react";
 
 export type AuthUser = {
+  sub: string;
+  user_id: number;
+  first_name: string;
+  last_name: string;
   permissions?: string[];
 };
 
