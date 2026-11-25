@@ -1,13 +1,13 @@
 from typing import Annotated
+
 from database.engine import SessionDep
-from fastapi import Depends, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, status
+from sqlalchemy.exc import IntegrityError
 from sqlmodel import select
 from core.security import get_current_user, get_password_hash
 from models.user import User
 from models.user import UserCreate
 from schemas.user import UserPublic
-
-from fastapi import APIRouter
 
 router = APIRouter()
 
@@ -37,8 +37,16 @@ def create_user(user: UserCreate, session: SessionDep) -> UserPublic:
 
     db_user = User(**user_data)
 
-    session.add(db_user)
-    session.commit()
+    try:
+        session.add(db_user)
+        session.commit()
+    except IntegrityError as error:
+        session.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Username or email is already registered",
+        ) from error
+
     session.refresh(db_user)
 
     return db_user

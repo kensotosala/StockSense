@@ -16,7 +16,7 @@ def authenticate_user(
     password: str,
 ) -> User | None:
     user = get_user(session, username)
-    if user is None:
+    if user is None or not user.is_active:
         return None
 
     try:

@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -29,6 +29,11 @@ async def login_for_access_token(
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
+
+    user.last_login_at = datetime.now(timezone.utc)
+    user.updated_at = user.last_login_at
+    session.add(user)
+    session.commit()
 
     access_token = create_access_token(
         data={
