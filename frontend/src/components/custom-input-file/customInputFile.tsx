@@ -21,7 +21,7 @@ const CustomInputFile = ({
   onChange,
 }: CustomInputFileProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [fileName, setFileName] = useState("No file selected");
+  const [fileName, setFileName] = useState("Ningún archivo seleccionado");
 
   const handleButtonClick = () => {
     inputRef.current?.click();
@@ -34,7 +34,7 @@ const CustomInputFile = ({
       setFileName(file.name);
       onChange(file); // To send the file to the Father component
     } else {
-      setFileName("No file selected");
+      setFileName("Ningún archivo seleccionado");
       onChange(null);
     }
   };
@@ -50,10 +50,15 @@ const CustomInputFile = ({
         accept={file_type}
         onChange={handleFileChange}
       />
-      <button type="button" id="inventory-data-btn" onClick={handleButtonClick}>
-        Choose A File
+      <button
+        type="button"
+        className="input-file-button"
+        onClick={handleButtonClick}
+        aria-label={`Elegir archivo para ${label_text}`}
+      >
+        Elegir archivo
       </button>
-      <span id={span_id} className="input-file-info">
+      <span id={span_id} className="input-file-info" aria-live="polite">
         {fileName}
       </span>
     </>

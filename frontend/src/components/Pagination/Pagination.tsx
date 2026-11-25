@@ -3,7 +3,7 @@ import "./Pagination.css";
 interface PaginationProps {
   totalRows: number;
   rowsPerPage: number;
-  currentPage: number; // Agregado para identificar la página activa
+  currentPage: number;
   setCurrentPage: (page: number) => void;
 }
 
@@ -13,30 +13,41 @@ const Pagination = ({
   currentPage,
   setCurrentPage,
 }: PaginationProps) => {
-  const pages: number[] = [];
   const totalPages = Math.ceil(totalRows / rowsPerPage);
-
-  for (let i = 1; i <= totalPages; i++) {
-    pages.push(i);
-  }
 
   if (totalPages <= 1) return null;
 
+  const firstRow = (currentPage - 1) * rowsPerPage + 1;
+  const lastRow = Math.min(currentPage * rowsPerPage, totalRows);
+
   return (
-    <div className="pagination-container">
-      {pages.map((page) => {
-        return (
-          <button
-            key={page}
-            onClick={() => setCurrentPage(page)}
-            // Aplica la clase 'active' si es la página actual
-            className={`pagination-btn ${page === currentPage ? "active" : ""}`}
-          >
-            {page}
-          </button>
-        );
-      })}
-    </div>
+    <nav className="pagination-container" aria-label="Paginación del reporte">
+      <p className="pagination-summary">
+        Mostrando <strong>{firstRow}-{lastRow}</strong> de{" "}
+        <strong>{totalRows}</strong> artículos
+      </p>
+      <div className="pagination-controls">
+        <button
+          type="button"
+          className="pagination-btn"
+          onClick={() => setCurrentPage(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Anterior
+        </button>
+        <span className="pagination-current" aria-current="page">
+          Página {currentPage} de {totalPages}
+        </span>
+        <button
+          type="button"
+          className="pagination-btn"
+          onClick={() => setCurrentPage(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Siguiente
+        </button>
+      </div>
+    </nav>
   );
 };
 

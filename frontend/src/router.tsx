@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
 import { Index } from "./pages";
 import Unauthenticated from "./pages/unauthenticated";
 import Authenticated from "./pages/authenticated";
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
   },
   {
     path: "/start-analysis",

@@ -2,11 +2,10 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-
     <style>
       @page {
         size: A4 landscape;
-        margin: 25px 25px 35px 25px;
+        margin: 24px 28px 38px 28px;
 
         @bottom-right {
           content: "Página " counter(page);
@@ -16,129 +15,108 @@
       }
 
       body {
-        font-family: Helvetica, Arial, sans-serif;
-        color: #1e293b;
-        font-size: 9px;
         margin: 0;
         padding: 0;
+        color: #0f172a;
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 9px;
       }
-
-      /* =========================
-           HEADER
-        ========================= */
 
       .header {
         width: 100%;
-        margin-bottom: 20px;
-        border-bottom: 3px solid #2563eb;
+        margin-bottom: 18px;
         padding-bottom: 14px;
+        border-bottom: 2px solid #1d4ed8;
       }
 
-      .header-table {
+      .header-table,
+      .summary-table,
+      .report-table,
+      .footer-table {
         width: 100%;
-        border-collapse: collapse;
       }
 
-      .header-left {
-        width: 70%;
+      .brand-mark {
+        width: 42px;
+        height: 42px;
+        background-color: #1d4ed8;
+        color: #ffffff;
+        font-size: 15px;
+        font-weight: bold;
+        text-align: center;
         vertical-align: middle;
       }
 
-      .header-right {
-        width: 30%;
+      .brand-copy {
+        padding-left: 10px;
+        vertical-align: middle;
+      }
+
+      .brand-name {
+        color: #172554;
+        font-size: 14px;
+        font-weight: bold;
+      }
+
+      .brand-description {
+        margin-top: 3px;
+        color: #64748b;
+        font-size: 8px;
+      }
+
+      .report-heading {
+        width: 40%;
         text-align: right;
         vertical-align: middle;
       }
 
-      .title {
-        font-size: 24px;
+      .report-title {
+        color: #172554;
+        font-size: 18px;
         font-weight: bold;
-        color: #0f172a;
-        margin: 0;
       }
 
-      .subtitle {
-        font-size: 10px;
-        color: #64748b;
+      .report-date {
         margin-top: 5px;
-      }
-
-      .date {
-        font-size: 9px;
         color: #64748b;
-      }
-
-      /* =========================
-           SUMMARY CARDS
-        ========================= */
-
-      .summary {
-        width: 100%;
-        margin-bottom: 20px;
+        font-size: 8px;
       }
 
       .summary-table {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 8px 0;
+        margin-bottom: 20px;
       }
 
-      .card {
+      .summary-cell {
+        width: 33.33%;
+        padding: 11px 14px;
+        border: 1px solid #dbeafe;
         background-color: #f8fafc;
-        border: 1px solid #e2e8f0;
-        padding: 12px;
-        height: 45px;
         vertical-align: middle;
       }
 
-      .card-blue {
-        background-color: #eff6ff;
-        border-left: 4px solid #2563eb;
+      .summary-cell + .summary-cell {
+        border-left: 5px solid #1d4ed8;
       }
 
-      .card-green {
-        background-color: #f0fdf4;
-        border-left: 4px solid #16a34a;
-      }
-
-      .card-orange {
-        background-color: #fff7ed;
-        border-left: 4px solid #ea580c;
-      }
-
-      .card-label {
-        font-size: 8px;
+      .summary-label {
         color: #64748b;
+        font-size: 7px;
+        font-weight: bold;
         text-transform: uppercase;
+      }
+
+      .summary-value {
+        margin-top: 5px;
+        color: #172554;
+        font-size: 16px;
         font-weight: bold;
       }
 
-      .card-value {
-        font-size: 18px;
-        color: #0f172a;
-        font-weight: bold;
-        margin-top: 4px;
-      }
-
-      /* =========================
-           SECTION
-        ========================= */
-
-      .section-title {
-        font-size: 13px;
-        font-weight: bold;
-        color: #0f172a;
+      .section-heading {
         margin-bottom: 8px;
-      }
-
-      /* =========================
-           MAIN TABLE
-        ========================= */
-
-      .report-table {
-        width: 100%;
-        border-collapse: collapse;
-        table-layout: fixed;
+        color: #172554;
+        font-size: 11px;
+        font-weight: bold;
       }
 
       .report-table thead {
@@ -146,20 +124,21 @@
       }
 
       .report-table th {
-        background-color: #1e3a8a;
-        color: white;
-        font-size: 7.5px;
-        font-weight: bold;
-        text-align: center;
         padding: 8px 5px;
-        border: 1px solid #1e3a8a;
+        border: 1px solid #172554;
+        background-color: #172554;
+        color: #ffffff;
+        font-size: 7px;
+        font-weight: bold;
+        text-align: left;
       }
 
       .report-table td {
         padding: 6px 5px;
         border-bottom: 1px solid #e2e8f0;
+        color: #334155;
+        font-size: 7px;
         vertical-align: middle;
-        font-size: 7.5px;
       }
 
       .report-table tbody tr:nth-child(even) {
@@ -170,81 +149,50 @@
         page-break-inside: avoid;
       }
 
-      /* =========================
-           COLUMN ALIGNMENT
-        ========================= */
-
-      .col-code {
-        width: 8%;
-        text-align: center;
-      }
-
-      .col-description {
-        width: 24%;
-        text-align: left;
-      }
-
-      .col-number {
-        width: 8.5%;
-        text-align: right;
-      }
-
-      .col-order {
-        width: 10%;
-        text-align: right;
-      }
-
-      /* =========================
-           VALUES
-        ========================= */
-
+      .code,
       .number {
-        text-align: right;
         white-space: nowrap;
       }
 
       .code {
-        text-align: center;
+        color: #1e3a8a;
         font-weight: bold;
-        color: #475569;
+        text-align: left;
       }
 
       .description {
-        text-align: left;
-        font-weight: 500;
-      }
-
-      .order-quantity {
-        text-align: right;
+        width: 27%;
         font-weight: bold;
-        color: #166534;
-        background-color: #dcfce7;
+        text-align: left;
       }
 
-      .stock-low {
+      .number {
+        text-align: right;
+      }
+
+      .stock-alert {
         color: #b91c1c;
         font-weight: bold;
       }
 
-      /* =========================
-           FOOTER
-        ========================= */
+      .order-needed {
+        background-color: #dbeafe;
+        color: #1d4ed8;
+        font-weight: bold;
+        text-align: right;
+      }
+
+      .order-none {
+        color: #64748b;
+        text-align: right;
+      }
 
       .footer {
-        margin-top: 18px;
-        padding-top: 10px;
+        margin-top: 16px;
+        padding-top: 8px;
         border-top: 1px solid #e2e8f0;
-        font-size: 7.5px;
-        color: #94a3b8;
-      }
-
-      .footer-table {
-        width: 100%;
-        border-collapse: collapse;
-      }
-
-      .footer-left {
-        text-align: left;
+        color: #64748b;
+        font-size: 7px;
       }
 
       .footer-right {
@@ -252,86 +200,100 @@
       }
     </style>
   </head>
-
   <body>
-    <!-- HEADER -->
-
     <div class="header">
       <table class="header-table">
         <tr>
-          <td class="header-left">
-            <div class="title">Reporte de Inventario</div>
+          <td class="brand-mark">SS</td>
+          <td class="brand-copy">
+            <div class="brand-name">StockSense</div>
+            <div class="brand-description">Inteligencia para tu inventario</div>
+          </td>
+          <td class="report-heading">
+            <div class="report-title">Reporte de inventario</div>
+            <div class="report-date">Generado el {{ generated_at }}</div>
           </td>
         </tr>
       </table>
     </div>
 
-    <!-- TABLE -->
+    <table class="summary-table">
+      <tr>
+        <td class="summary-cell">
+          <div class="summary-label">Artículos analizados</div>
+          <div class="summary-value">
+            {{ "{:,.0f}".format(total_products) }}
+          </div>
+        </td>
+        <td class="summary-cell">
+          <div class="summary-label">Requieren reposición</div>
+          <div class="summary-value">
+            {{ "{:,.0f}".format(products_to_replenish) }}
+          </div>
+        </td>
+        <td class="summary-cell">
+          <div class="summary-label">Unidades sugeridas</div>
+          <div class="summary-value">
+            {{ "{:,.0f}".format(total_units_to_order) }}
+          </div>
+        </td>
+      </tr>
+    </table>
 
-    <div class="section-title">Detalle del inventario</div>
+    <div class="section-heading">Detalle de productos</div>
 
     <table class="report-table">
       <thead>
         <tr>
-          <th class="col-code">Código</th>
-
-          <th class="col-description">Descripción</th>
-
-          <th class="col-number">Ventas</th>
-
-          <th class="col-number">Demanda<br />mensual</th>
-
-          <th class="col-number">Demanda<br />diaria</th>
-
-          <th class="col-number">Stock<br />seguridad</th>
-
-          <th class="col-number">Punto<br />reorden</th>
-
-          <th class="col-number">Existencia</th>
-
-          <th class="col-order">Cantidad<br />a ordenar</th>
+          <th style="width: 8%">Código</th>
+          <th class="description">Descripción</th>
+          <th style="width: 8%; text-align: right">Ventas</th>
+          <th style="width: 9%; text-align: right">Demanda mensual</th>
+          <th style="width: 8%; text-align: right">Demanda diaria</th>
+          <th style="width: 9%; text-align: right">Stock seguridad</th>
+          <th style="width: 9%; text-align: right">Punto reorden</th>
+          <th style="width: 8%; text-align: right">Existencia</th>
+          <th style="width: 10%; text-align: right">Cantidad a ordenar</th>
         </tr>
       </thead>
-
       <tbody>
         {% for row in data %}
-
         <tr>
           <td class="code">{{ row["CODIGO"] }}</td>
-
           <td class="description">{{ row["DESCRIPCION"] }}</td>
-
           <td class="number">{{ "{:,.0f}".format(row["CANTIDAD"]) }}</td>
-
-          <td class="number">{{ "{:,.0f}".format(row["DEMANDA MENSUAL"]) }}</td>
-
-          <td class="number">{{ "{:,.2f}".format(row["DEMANDA DIARIA"]) }}</td>
-
-          <td class="number">{{ "{:,.0f}".format(row["STOCK SEGURIDAD"]) }}</td>
-
+          <td class="number">
+            {{ "{:,.0f}".format(row["DEMANDA MENSUAL"]) }}
+          </td>
+          <td class="number">
+            {{ "{:,.2f}".format(row["DEMANDA DIARIA"]) }}
+          </td>
+          <td class="number">
+            {{ "{:,.0f}".format(row["STOCK SEGURIDAD"]) }}
+          </td>
           <td class="number">
             {{ "{:,.0f}".format(row["PUNTO DE REORDEN"]) }}
           </td>
-
-          <td class="number">{{ "{:,.0f}".format(row["EXISTENCIA"]) }}</td>
-
-          <td class="order-quantity">
+          <td
+            class="number {% if row['EXISTENCIA'] < row['PUNTO DE REORDEN'] %}stock-alert{% endif %}"
+          >
+            {{ "{:,.0f}".format(row["EXISTENCIA"]) }}
+          </td>
+          <td
+            class="{% if row['CANTIDAD A ORDENAR'] > 0 %}order-needed{% else %}order-none{% endif %}"
+          >
             {{ "{:,.0f}".format(row["CANTIDAD A ORDENAR"]) }}
           </td>
         </tr>
-
         {% endfor %}
       </tbody>
     </table>
 
-    <!-- FOOTER -->
-
     <div class="footer">
       <table class="footer-table">
         <tr>
-          <td class="footer-left">Reporte generado automáticamente.</td>
-
-          <td class="footer-right">Sistema de gestión de inventario</td>
+          <td>StockSense · Resumen de existencias y reposición</td>
+          <td class="footer-right">Reporte generado automáticamente</td>
         </tr>
       </table>
     </div>

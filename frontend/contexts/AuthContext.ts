@@ -13,11 +13,19 @@ type Credentials = {
   password: string;
 };
 
+export type RegistrationDetails = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+};
+
 type AuthContextValue = {
   token: string;
   user: AuthUser | null;
   isAuthenticated: boolean;
   login: (credentials: Credentials) => Promise<void>;
+  register: (details: RegistrationDetails) => Promise<void>;
   logout: () => void;
 };
 

@@ -5,6 +5,7 @@ import {
   DownloadPDFReport,
 } from "../../services/ExportService";
 import type { InventoryReportItem } from "../../types/inventory";
+import { useAuth } from "../../../contexts/AuthContext";
 
 interface ExportOptionsProps {
   reportId: string;
@@ -12,6 +13,7 @@ interface ExportOptionsProps {
 }
 
 const ExportOptions = ({ reportId, data }: ExportOptionsProps) => {
+  const { token } = useAuth();
   const [error, setError] = useState<string | null>(null);
   const [isExporting, setIsExporting] = useState(false);
 
@@ -25,7 +27,7 @@ const ExportOptions = ({ reportId, data }: ExportOptionsProps) => {
       setIsExporting(true);
       setError(null);
 
-      await DownloadPDFReport(data);
+      await DownloadPDFReport(data, token);
     } catch (err: unknown) {
       const message =
         err instanceof Error ? err.message : "No se pudo generar el PDF.";
@@ -47,7 +49,7 @@ const ExportOptions = ({ reportId, data }: ExportOptionsProps) => {
       setIsExporting(true);
       setError(null);
 
-      await DownloadCSVReport(data);
+      await DownloadCSVReport(data, token);
     } catch (err: unknown) {
       const message =
         err instanceof Error ? err.message : "No se pudo generar el CSV.";
@@ -65,8 +67,9 @@ const ExportOptions = ({ reportId, data }: ExportOptionsProps) => {
         className="option option-pdf"
         onClick={handleExportPDF}
         disabled={isExporting}
+        aria-busy={isExporting}
       >
-        {isExporting ? "Generando PDF..." : "Exportar a PDF"}
+        {isExporting ? "Preparando PDF..." : "Descargar PDF"}
       </button>
 
       {error && <p role="alert">{error}</p>}
@@ -76,8 +79,9 @@ const ExportOptions = ({ reportId, data }: ExportOptionsProps) => {
         className="option option-pdf"
         onClick={handleExportCSV}
         disabled={isExporting}
+        aria-busy={isExporting}
       >
-        {isExporting ? "Generando CSV..." : "Exportar a CSV"}
+        {isExporting ? "Preparando CSV..." : "Descargar CSV"}
       </button>
     </div>
   );

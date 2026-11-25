@@ -1,4 +1,4 @@
-#inventory-data-btn {
+.input-file-button {
   padding: 10px;
   color: white;
   background-color: #000000;
@@ -7,15 +7,18 @@
   cursor: pointer;
 }
 
-#inventory-data-btn:hover {
+.input-file-button:hover {
   background-color: #1d4ed8;
 }
 
-#inventory-data-btn:focus {
+.input-file-button:focus-visible {
   background-color: #080652;
+  outline: 2px solid #1d4ed8;
+  outline-offset: 2px;
 }
 
 .input-file-info {
   margin-left: 10px;
-  color: #aaa;
+  color: #64748b;
+  overflow-wrap: anywhere;
 }

@@ -1,11 +1,14 @@
 import logging
+from uuid import uuid4
 from typing import Optional
 
-from fastapi import APIRouter, Depends, HTTPException
+import pandas as pd
+from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field, ConfigDict
 
 from core.security import get_current_user
+from services.order_processor_service import generar_orden
 from services.report_export_service import exportar_csv, exportar_pdf
 
 router = APIRouter()
@@ -24,6 +27,77 @@ class InventoryItem(BaseModel):
     PUNTO_DE_REORDEN: float = Field(alias="PUNTO DE REORDEN")
     EXISTENCIA: float
     CANTIDAD_A_ORDENAR: float = Field(alias="CANTIDAD A ORDENAR")
+
+
+class InventoryAnalysisResponse(BaseModel):
+    report_id: str
+    items: list[InventoryItem]
+    total: int
+    page: int
+    size: int
+    pages: int
+
+
+def _read_csv(upload: UploadFile, label: str) -> pd.DataFrame:
+    try:
+        data = pd.read_csv(
+            upload.file,
+            sep=None,
+            engine="python",
+            skipinitialspace=True,
+            encoding="utf-8-sig",
+        )
+        data.columns = data.columns.str.strip()
+        return data
+    except (
+        pd.errors.EmptyDataError,
+        pd.errors.ParserError,
+        UnicodeDecodeError,
+    ) as error:
+        raise HTTPException(
+            status_code=422,
+            detail=f"El archivo de {label} no es un CSV válido: {error}",
+        ) from error
+
+
+@router.post(
+    "/analysis/",
+    response_model=InventoryAnalysisResponse,
+    dependencies=[Depends(get_current_user)],
+)
+def analyze_inventory(
+    sells: UploadFile = File(...),
+    actual_inventory: UploadFile = File(...),
+    inventory_history_days: int = Form(..., gt=0),
+    coverage_days: int = Form(..., gt=0),
+    buffer_days: int = Form(default=0, ge=0),
+    lead_time: int = Form(default=0, ge=0),
+) -> InventoryAnalysisResponse:
+    sales_data = _read_csv(sells, "ventas")
+    inventory_data = _read_csv(actual_inventory, "inventario")
+
+    try:
+        result = generar_orden(
+            plazo_historial_inventario=inventory_history_days,
+            dias_cobertura=coverage_days,
+            dias_colchon=buffer_days,
+            lead_time=lead_time,
+            ventas_articulos=sales_data,
+            inventario_actual=inventory_data,
+        )
+    except ValueError as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
+
+    items = result.to_dict(orient="records")
+    total = len(items)
+    return InventoryAnalysisResponse(
+        report_id=uuid4().hex,
+        items=items,
+        total=total,
+        page=1,
+        size=total,
+        pages=1 if total else 0,
+    )
 
 
 @router.post(

@@ -15,10 +15,21 @@ env = Environment(
 
 
 def exportar_pdf(datos: dict) -> tuple[io.BytesIO, str]:
-
     template = env.get_template("reports/invoice.html")
-
-    html = template.render(**datos)
+    generated_at = datetime.now()
+    report_rows = datos["data"]
+    context = {
+        **datos,
+        "generated_at": generated_at.strftime("%d/%m/%Y %H:%M"),
+        "total_products": len(report_rows),
+        "products_to_replenish": sum(
+            row["CANTIDAD A ORDENAR"] > 0 for row in report_rows
+        ),
+        "total_units_to_order": sum(
+            row["CANTIDAD A ORDENAR"] for row in report_rows
+        ),
+    }
+    html = template.render(**context)
 
     pdf_buffer = io.BytesIO()
 
@@ -32,7 +43,7 @@ def exportar_pdf(datos: dict) -> tuple[io.BytesIO, str]:
 
     pdf_buffer.seek(0)
 
-    file_name = f"report_{datetime.now():%Y%m%d_%H%M%S}.pdf"
+    file_name = f"report_{generated_at:%Y%m%d_%H%M%S}.pdf"
 
     return pdf_buffer, file_name
 

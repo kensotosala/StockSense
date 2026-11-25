@@ -1,5 +1,9 @@
 import { useState, type ReactNode } from "react";
-import { AuthContext, type AuthUser } from "./AuthContext";
+import {
+  AuthContext,
+  type AuthUser,
+  type RegistrationDetails,
+} from "./AuthContext";
 
 const TOKEN_KEY = "token";
 const USER_KEY = "user";
@@ -78,6 +82,41 @@ const readStoredAuth = () => {
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [auth, setAuth] = useState(readStoredAuth);
 
+  const register = async ({
+    firstName,
+    lastName,
+    email,
+    password,
+  }: RegistrationDetails) => {
+    const normalizedEmail = email.trim().toLowerCase();
+    const response = await fetch("http://127.0.0.1:8000/api/users/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_name: normalizedEmail,
+        first_name: firstName.trim(),
+        last_name: lastName.trim(),
+        email: normalizedEmail,
+        password,
+      }),
+    });
+
+    if (!response.ok) {
+      if (response.status === 409) {
+        throw new Error("Ya existe una cuenta con ese correo electrónico.");
+      }
+
+      const result = (await response.json()) as { detail?: unknown };
+      throw new Error(
+        typeof result.detail === "string"
+          ? result.detail
+          : `No se pudo crear la cuenta (${response.status}).`,
+      );
+    }
+  };
+
   const login = async ({ username, password }: Credentials) => {
     const response = await fetch("http://127.0.0.1:8000/api/login", {
       method: "POST",
@@ -115,6 +154,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         ...auth,
         isAuthenticated: Boolean(auth.token),
         login,
+        register,
         logout,
       }}
     >

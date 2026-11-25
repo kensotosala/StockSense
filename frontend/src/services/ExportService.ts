@@ -35,6 +35,7 @@ function downloadBlob(blob: Blob, fileName: string): void {
  */
 export async function DownloadPDFReport(
   data: InventoryReportItem[],
+  token: string,
 ): Promise<void> {
   if (!data.length) {
     throw new Error("No hay datos para exportar.");
@@ -44,6 +45,7 @@ export async function DownloadPDFReport(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(data),
   });
@@ -65,6 +67,7 @@ export async function DownloadPDFReport(
  */
 export async function DownloadCSVReport(
   data: InventoryReportItem[],
+  token: string,
 ): Promise<void> {
   if (!data.length) {
     throw new Error("No hay datos para exportar.");
@@ -74,6 +77,7 @@ export async function DownloadCSVReport(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(data),
   });

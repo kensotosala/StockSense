@@ -24,7 +24,7 @@ The core calculation uses sales history, current stock, and planning parameters 
 
 ### Analysis workflow status
 
-The calculation logic is implemented in `backend/services/order_processor_service.py`, and the frontend is set up to send a request to `/api/analysis`. However, the API does not currently expose that analysis endpoint. The calculation service still needs to be connected to a backend route before the upload-and-report workflow can run end to end.
+The calculation logic in `backend/services/order_processor_service.py` is exposed through the authenticated `POST /api/analysis/` endpoint. It accepts comma- or semicolon-delimited sales and current-inventory CSV files, plus the required sales-history and coverage days, and returns a replenishment report.
 
 ## Tech Stack
 
@@ -114,6 +114,7 @@ The application registers its routes under the `/api` prefix:
 | Method | Route | Description |
 |---|---|---|
 | `POST` | `/api/login` | Signs in and returns an access token. |
+| `POST` | `/api/analysis/` | Analyzes sales and inventory CSV files; authentication required. |
 | `GET` | `/api/users/` | Lists users; authentication required. |
 | `POST` | `/api/users/` | Creates a user; authentication is not currently required. |
 | `POST` | `/api/download_csv_report` | Generates a CSV report; authentication required. |
@@ -137,7 +138,6 @@ The current configuration defines a fixed JWT secret in `backend/core/config.py`
 
 ## Roadmap
 
-- Connect the calculation service to the `/api/analysis` endpoint.
 - Configure the backend URL through frontend environment variables.
 - Add and document automated tests for inventory processing and API routes.
 - Move the JWT secret to environment-based configuration and prepare the application for deployment.
